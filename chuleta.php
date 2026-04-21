@@ -835,7 +835,7 @@ $total_servicios = count($SERVICIOS);
       <a href="index.php" class="nav-link">Inicio</a>
       <a href="test.php?modo=completo" class="nav-link">Test Completo</a>
       <a href="chuleta.php" class="nav-link active">Glosario AWS CLF-C02</a>
-      <span class="nav-link disabled">Azure AZ-900 <span class="nav-badge">Próximamente</span></span>
+      <a href="test.php?modulo=6" class="nav-link">Azure AZ-900</a>
       <span class="nav-link disabled">Linux LPIC-1 <span class="nav-badge">Próximamente</span></span>
       <a href="admin.php" class="nav-link">Admin</a>
     </nav>
@@ -959,15 +959,6 @@ function setCatFilter(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  document.querySelectorAll('.cat-section').forEach(section => {
-    if (cat === 'all' || section.dataset.cat === cat) {
-      section.style.display = '';
-    } else {
-      section.style.display = 'none';
-    }
-  });
-//  aqui cambie
   filterServices();
 }
 
@@ -978,50 +969,57 @@ function toggleSection(catKey) {
 
 function filterServices() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
-  document.getElementById('searchTerm').textContent = query;
+  const resultsContainer = document.getElementById('searchResults');
+  const globalNoRes = document.getElementById('globalNoResults');
+  const allSections = document.querySelectorAll('.cat-section');
+  const catFilters = document.getElementById('catFilters');
 
   if (query) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  let totalVisible = 0;
-
-  document.querySelectorAll('.cat-section').forEach(section => {
-    const catKey  = section.dataset.cat;
-    const cards   = section.querySelectorAll('.service-card');
-    let catVisible = 0;
-
-    // Skip if category filter hides this section
-    if (currentCat !== 'all' && catKey !== currentCat) {
-      section.style.display = 'none';
-      return;
-    }
-    section.style.display = '';
-
-    cards.forEach(card => {
-      const searchData = card.dataset.search || '';
-      const matches = !query || searchData.includes(query);
-      card.classList.toggle('hidden', !matches);
-      if (matches) catVisible++;
+    // Only query original cards inside sections (not clones in resultsContainer)
+    const matchingCards = [];
+    document.querySelectorAll('.cat-section .service-card').forEach(card => {
+      const cardCat = card.dataset.cat;
+      if (currentCat !== 'all' && cardCat !== currentCat) return;
+      // Search only in service name (prefix + name), not description or facts
+      const prefix = (card.querySelector('.service-prefix')?.textContent || '').toLowerCase();
+      const name   = (card.querySelector('.service-name')?.textContent  || '').toLowerCase();
+      if (name.includes(query) || (prefix + ' ' + name).includes(query)) {
+        matchingCards.push(card.cloneNode(true));
+      }
     });
 
-    totalVisible += catVisible;
+    // Hide all sections and filters, show results container
+    allSections.forEach(s => s.style.display = 'none');
+    catFilters.style.display = 'none';
+    globalNoRes.classList.add('hidden');
 
-    // Show/hide "no results" within category
-    const noRes = document.getElementById('noResults-' + catKey);
-    if (noRes) noRes.style.display = (catVisible === 0 && query) ? '' : 'none';
-
-    if (query) {
-      if (catVisible > 0) section.classList.remove('collapsed');
+    if (matchingCards.length > 0) {
+      resultsContainer.innerHTML = '';
+      matchingCards.forEach(card => resultsContainer.appendChild(card));
+      resultsContainer.classList.remove('hidden');
     } else {
-      section.classList.remove('collapsed');
+      resultsContainer.classList.add('hidden');
+      document.getElementById('searchTerm').textContent = query;
+      globalNoRes.classList.remove('hidden');
     }
-  });
+  } else {
+    // Clear search: restore sections and filters
+    resultsContainer.innerHTML = '';
+    resultsContainer.classList.add('hidden');
+    globalNoRes.classList.add('hidden');
+    catFilters.style.display = '';
 
-  const globalNoRes = document.getElementById('globalNoResults');
-  globalNoRes.classList.toggle('hidden', totalVisible > 0 || !query);
+    allSections.forEach(section => {
+      if (currentCat === 'all' || section.dataset.cat === currentCat) {
+        section.style.display = '';
+        section.classList.remove('collapsed');
+      } else {
+        section.style.display = 'none';
+      }
+    });
+  }
 }
-// hasta aqui cambie
+
 // Keyboard shortcut: "/" focuses the search bar
 document.addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {

@@ -50,7 +50,7 @@ $icon_classes = ['icon-compute','icon-storage','icon-network','icon-security','i
       <a href="index.php" class="nav-link active">Inicio</a>
       <a href="test.php?modo=completo" class="nav-link">Test Completo</a>
       <a href="chuleta.php" class="nav-link">Glosario AWS CLF-C02</a>
-      <span class="nav-link disabled">Azure AZ-900 <span class="nav-badge">Próximamente</span></span>
+      <a href="test.php?modulo=6" class="nav-link">Azure AZ-900</a>
       <span class="nav-link disabled">Linux LPIC-1 <span class="nav-badge">Próximamente</span></span>
       <a href="admin.php" class="nav-link">Admin</a>
     </nav>
@@ -68,7 +68,7 @@ $icon_classes = ['icon-compute','icon-storage','icon-network','icon-security','i
       <span class="stat-label">Preguntas</span>
     </div>
     <div class="stat">
-      <span class="stat-num">5</span>
+      <span class="stat-num"><?= count($modulos) ?></span>
       <span class="stat-label">Módulos</span>
     </div>
     <div class="stat">

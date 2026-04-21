@@ -52,7 +52,8 @@ INSERT INTO modulos (id, nombre, descripcion, icono) VALUES
 (2, 'Almacenamiento y Bases de Datos', 'Amazon S3, EBS, EFS, RDS, DynamoDB, Aurora, Redshift', 'fa-database'),
 (3, 'Redes y Entrega de Contenido', 'Amazon VPC, CloudFront, Route 53, ELB, API Gateway, Direct Connect', 'fa-network-wired'),
 (4, 'Seguridad, Identidad y Cumplimiento', 'AWS IAM, Shield, WAF, KMS, CloudTrail, GuardDuty, Cognito', 'fa-shield-alt'),
-(5, 'Facturación, Precios y Arquitectura', 'AWS Pricing, Cost Explorer, Trusted Advisor, Well-Architected Framework', 'fa-dollar-sign');
+(5, 'Facturación, Precios y Arquitectura', 'AWS Pricing, Cost Explorer, Trusted Advisor, Well-Architected Framework', 'fa-dollar-sign'),
+(6, 'Azure AZ-900', 'Fundamentos de Azure: cloud, identidad, seguridad, gobernanza, costes y soporte', 'fa-cloud');
 
 -- PREGUNTAS: MÓDULO 1 - COMPUTACIÓN (40 preguntas)
 INSERT INTO preguntas (modulo_id, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, respuesta_correcta, explicacion, dificultad) VALUES

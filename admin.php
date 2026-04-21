@@ -85,7 +85,7 @@ if ($filter_mod) {
       <a href="index.php" class="nav-link">Inicio</a>
       <a href="test.php?modo=completo" class="nav-link">Test</a>
       <a href="chuleta.php" class="nav-link">Glosario AWS CLF-C02</a>
-      <span class="nav-link disabled">Azure AZ-900 <span class="nav-badge">Próximamente</span></span>
+      <a href="test.php?modulo=6" class="nav-link">Azure AZ-900</a>
       <span class="nav-link disabled">Linux LPIC-1 <span class="nav-badge">Próximamente</span></span>
       <a href="admin.php" class="nav-link active">Admin</a>
     </nav>
